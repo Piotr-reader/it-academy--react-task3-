@@ -4,10 +4,9 @@ SHR.open('GET', REQUEST_URL);
 let arr;
 SHR.onload = () => {
     arr = JSON.parse(SHR.response);
+    btn()
 }
 SHR.send();
-
-
 class PoemButton {
     constructor(buttonCaption, alertText) {
         this.buttonCaption = buttonCaption;
@@ -16,7 +15,7 @@ class PoemButton {
     createElem() {
         let newEl = document.createElement('input');
         newEl.classList.add('btn');
-        newEl.value = `buttonCaption`;
+        newEl.value = this.buttonCaption;
         document.body.appendChild(newEl);
       }
 
@@ -24,15 +23,21 @@ class PoemButton {
         return alert(this.alertText);
     }
 }
-new PoemButton().createElem();
-
-  const BTN = document.querySelector('.btn');
-  BTN.addEventListener('click',() => {
-    arr.forEach( obj => {
-        let poem = new PoemButton(obj.buttonCaption, obj.alertText);
-        poem.buttonPressed();
-    })
-} );
+const btn = () => {
+    for (let i = 0; i < arr.length; i++) {
+        const element = arr[i].buttonCaption;
+        new PoemButton(element).createElem();
+    }
+    const BTN = document.querySelectorAll('.btn');
+      BTN.forEach(btn => {
+        btn.addEventListener('click',(e) => {
+            let str = e.target.value;
+            str = +str[str.length - 1]
+            let text = new PoemButton(arr.buttonCaption, arr[str-1].alertText);
+            text.buttonPressed();
+            } );
+      })
+    };
 
 
 
